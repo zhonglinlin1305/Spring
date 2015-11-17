@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.Account;
+import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.User;
 
 public interface ITestDAO {
 	
@@ -32,6 +33,14 @@ public interface ITestDAO {
 			" where " +
 			" id >= #{id}";
 	
+	String FIND_USER_BY_ID = "select " +
+			" id as userId," +
+			" name as userName," +
+			" money as userMoney" +
+			" from account " +
+			" where " +
+			" id = #{id}";
+	
 	@Update(ADD_MONEY)
 	public int addMoney(int userId,float money);
 	
@@ -46,5 +55,8 @@ public interface ITestDAO {
 
 	@Select(FIND_ACCOUNTS_BY_ID)
 	public List<Account> findAccountsById(int id); 
+	
+	@Select(FIND_USER_BY_ID)
+	public User findUserById(int id);
 	
 }

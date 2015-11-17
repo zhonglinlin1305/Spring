@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.Account;
+import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.User;
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.ITestService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -62,12 +63,24 @@ public class SpringWithMybatisTest {
 		}
 	}*/
 	
-	@Test
+	/*@Test
 	public void testList(){
 		
 		try {
 			List<Account> accounts = testService.findAccountsById(3);
 			System.out.println(accounts);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	*/
+	@Test
+	public void testFindUser(){
+		
+		try {
+			User user = testService.findUserById(1);
+			System.out.println(user);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.Account;
+import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.User;
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.dao.ITestDAO;
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.ITestService;
 
@@ -37,4 +38,10 @@ public class TestServiceImpl implements ITestService {
 	public List<Account> findAccountsById(int i) {
 		return this.testDAO.findAccountsById(i);
 	}
+
+	@Override
+	public User findUserById(int i) {
+		return this.testDAO.findUserById(i);
+	}
+	
 }
