@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	">
+
+	<!-- 载入常用的配置 -->
+	<context:property-placeholder location="classpath:jdbc_hibernate.properties" />
+	<!-- 注解扫描所有包 -->
+	<context:component-scan base-package="cn.kiiwii.framework.spring.TestSpring.springwithhibernate.*" />
+
+	<!-- 创建数据源 并且使用proxool数据库连接池-->
+	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+
+		<property name="driver" value="${jdbc.driverClassName}" />
+		<property name="driverUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="alias" value="${proxool.alias}" />
+		<!-- 连接最大活动时间(毫秒) -->
+		<property name="maximumActiveTime" value="${proxool.maximumActiveTime}" />
+		<!-- 每次新增连接数 -->
+		<property name="prototypeCount" value="${proxool.prototypeCount}" />
+		<property name="trace" value="${proxool.trace}" />
+		<property name="verbose" value="${proxool.verbose}" />
+
+		<!-- 侦测状时间(毫秒) -->
+		<property name="houseKeepingSleepTime" value="${proxool.houseKeepingSleepTime}" />
+
+		<!-- 最大连接数量 -->
+		<property name="maximumConnectionCount" value="${proxool.maximumConnectionCount}" />
+		<!-- 最小连接数量 -->
+		<property name="minimumConnectionCount" value="${proxool.simultaneousBuildThrottle}" />
+		<!-- 并发数 -->
+		<property name="simultaneousBuildThrottle" value="${proxool.simultaneousBuildThrottle}" />
+		<!-- 用于保持连接的测试语句 -->
+		<property name="houseKeepingTestSql" value="${proxool.houseKeepingTestSql}" />
+		<!-- 日志统计跟踪类型。 参数“ERROR”或 “INFO” -->
+		<property name="statisticsLogLevel" value="${proxool.statisticsLogLevel}" />
+
+		<property name="testBeforeUse" value="${proxool.testBeforeUse}" />
+
+	</bean>
+	
+	<!-- 创建sessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">
+					${hibernate.show_sql}
+				</prop>
+				<prop key="hibernate.use_sql_comments">
+					${hibernate.use_sql_comments}
+				</prop>
+				<prop key="hibernate.dialect">
+					${hibernate.dialect}
+				</prop>
+				<prop key="hibernate.jdbc.fetch_size">
+					${hibernate.jdbc.fetch_size}
+				</prop>
+				<prop key="hibernate.jdbc.batch_size">
+					${hibernate.jdbc.batch_size}
+				</prop>
+				<prop key="hibernate.use_outer_join">
+					${hibernate.use_outer_join}
+				</prop>
+			</props>
+		</property>
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+
+
+		<!-- 自动扫描注解方式配置的hibernate类文件 -->
+		<property name="packagesToScan">
+			<list>
+				<value>cn.kiiwii.framework.spring.TestSpring.springwithhibernate.model</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 自定义切面配置start -->
+	<bean id="proxy"
+		class="cn.kiiwii.framework.spring.TestSpring.springwithhibernate.proxy.MyProxy">
+	</bean>
+	<aop:config>
+		<!-- 设置自定义的切面 -->
+		<aop:pointcut id="pc" expression="execution(* cn.kiiwii.framework.spring.TestSpring.springwithhibernate.service.impl.*.*(..))" />
+		<aop:aspect ref="proxy">
+			<aop:before pointcut-ref="pc" method="breforPerformance" />
+			<aop:after pointcut-ref="pc" method="afterPerformance" />
+			<aop:around pointcut-ref="pc" method="aroundMethod" />
+		</aop:aspect>
+	</aop:config>
+	<!-- 自定义切面配置 end -->
+
+
+	<!-- 性能监控的切面配置 -->
+	<!-- <bean id="performanceMonitor" class="org.springframework.aop.interceptor.PerformanceMonitorInterceptor"> 
+		</bean> <aop:config> <aop:pointcut id="allServiceMethods" expression="execution(* 
+		cn.kiiwii.framework.service.impl.*.*(..))" /> <aop:advisor pointcut-ref="allServiceMethods" 
+		advice-ref="performanceMonitor" order="2" /> </aop:config> -->
+	<!-- 性能监控的切面配置 end -->
+
+	<!-- 事务配置 start -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource">
+		</property>
+	</bean>
+
+	<tx:advice id="txadvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="transfer*" propagation="REQUIRED" />
+			<tx:method name="upgrade*" propagation="REQUIRED" />
+			<tx:method name="change*" propagation="REQUIRED" />
+			<tx:method name="do*" propagation="REQUIRED" />
+			<tx:method name="*" propagation="REQUIRED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut expression="execution(* cn.kiiwii.framework.spring.TestSpring.springwithhibernate.service.impl.*.*(..))"
+			id="txpointcut" />
+		<aop:advisor advice-ref="txadvice" pointcut-ref="txpointcut" />
+	</aop:config>
+
+	<!-- 事务配置 end -->
+
+
+	<!-- 强制使用cglib代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+</beans>
