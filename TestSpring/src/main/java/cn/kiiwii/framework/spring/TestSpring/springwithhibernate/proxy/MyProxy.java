@@ -26,9 +26,9 @@ public class MyProxy {
 //		Object o = pjp.getTarget();
 //		System.out.println("methodName:"+o.getClass().getName()+"."+pjp.getSignature().getName());
 		
-		logger.info("MyProxy breforProceed()ss.");
+		logger.info("MyProxy-------------- breforProceed().");
 		Object o = pjp.proceed();
-		logger.info("MyProxy endProceed().");
+		logger.info("MyProxy--------------- endProceed().");
 		return o;
 //		System.out.println("method around end!");
 	}

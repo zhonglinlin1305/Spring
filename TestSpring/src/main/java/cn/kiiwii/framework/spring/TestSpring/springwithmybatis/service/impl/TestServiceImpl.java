@@ -39,7 +39,6 @@ public class TestServiceImpl implements ITestService {
 		return this.testDAO.findAccountsById(i);
 	}
 
-	@Override
 	public User findUserById(int i) {
 		return this.testDAO.findUserById(i);
 	}

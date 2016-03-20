@@ -48,7 +48,6 @@ public class TestDAOImpl implements ITestDAO{
 		return null;
 	}
 
-	@Override
 	public List<Map<String, Object>> findList() {
 		List<Map<String,Object>> maps = this.jdbcTemplate.queryForList("select * from account ");
 		return maps;

@@ -17,7 +17,7 @@ public class SpringWithHibernateTest {
 	@Resource(name = "testHibernateService")
 	private ITestHibernateService testHibernateService;
 
-	@Test
+	/*@Test
 	public void testTransation() {
 		boolean b;
 		try {
@@ -31,7 +31,7 @@ public class SpringWithHibernateTest {
 			e.printStackTrace();
 			System.out.println("转账失败");
 		}
-	}
+	}*/
 	/*@Test
 	public void testsave(){
 		Account account = new Account();
@@ -40,10 +40,11 @@ public class SpringWithHibernateTest {
 		
 		testHibernateService.save(account);
 	}*/
-	/*@Test
+	@Test
 	public void testGet(){
 		
 		Account account = testHibernateService.getEntity(Account.class,3);
+		Account account2 = testHibernateService.getEntity(Account.class,3);
 		System.out.println(account);
-	}*/
+	}
 }

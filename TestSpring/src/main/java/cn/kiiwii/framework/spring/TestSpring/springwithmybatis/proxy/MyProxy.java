@@ -23,10 +23,11 @@ public class MyProxy {
 //		org.aspectj.lang.Signature signature = pjp.getSignature();
 //		Object[] obs = pjp.getArgs();
 //		org.aspectj.lang.JoinPoint.StaticPart part = pjp.getStaticPart();
-//		Object o = pjp.getTarget();
-//		System.out.println("methodName:"+o.getClass().getName()+"."+pjp.getSignature().getName());
-		return pjp.proceed();
-//		System.out.println("method around end!");
+		Object o = pjp.getTarget();
+		logger.info("------------------------------before excute method,method name is:'"+o.getClass().getName()+"."+pjp.getSignature().getName()+"'");
+		Object proceed = pjp.proceed();
+		logger.info("------------------------------after excute method");
+		return proceed;
 	}
 
 }
