@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+    	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    	">
+
+    <!-- 启动扫描所有的controller -->
+    <context:component-scan base-package="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.controller"/>
+
+    <!-- 完成请求和注解POJO的映射 -->
+    <bean
+            class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    </bean>
+    <bean
+            class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    </bean>
+
+    <!-- web请求的拦截器
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+            <mvc:exclude-mapping path="/register"/>
+            <mvc:exclude-mapping path="/test/*"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/findPwd"/>
+            <mvc:exclude-mapping path="/getTRegion"/>
+            <mvc:exclude-mapping path="/getIndustry"/>
+            <mvc:exclude-mapping path="/getTRegionByParentId"/>
+            <mvc:exclude-mapping path="/getMessageCode"/>
+            <mvc:exclude-mapping path="/listRecommend"/>
+            <mvc:exclude-mapping path="/news/getNewsDetail"/>
+            <mvc:exclude-mapping path="/css/ceos.css"/>
+            <bean class="cn.kiiwii.framework.interceptor.MyInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    -->
+
+    <!-- jsp页面解析器，当Controller返回XXX字符串时，先通过拦截器，然后该类就会在/WEB-INF/views/目录下，查找XXX.jsp文件 -->
+    <bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!-- 多段文件上传 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1073741824"/>
+    </bean>
+    <mvc:default-servlet-handler/>
+</beans>

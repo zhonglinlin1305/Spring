@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+	">
+
+    <!-- 载入常用的配置 -->
+    <context:property-placeholder location="classpath:jdbc.properties,classpath:druid.properties"/>
+    <!-- 注解扫描所有包 -->
+    <context:component-scan
+            base-package="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.*"/>
+
+    <context:annotation-config/>
+
+    <tx:annotation-driven/>
+
+    <!--扫描缓存注解-->
+    <cache:annotation-driven/>
+
+    <!-- 创建数据源 并且使用proxool数据库连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${druid.initialSize}"/>
+        <property name="minIdle" value="${druid.minIdle}"/>
+        <property name="maxActive" value="${druid.maxActive}"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${druid.maxWait}"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}"/>
+
+        <property name="validationQuery" value="${druid.validationQuery}"/>
+        <property name="testWhileIdle" value="${druid.testWhileIdle}"/>
+        <property name="testOnBorrow" value="${druid.testOnBorrow}"/>
+        <property name="testOnReturn" value="${druid.testOnReturn}"/>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用）
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
+
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="${druid.filters}"/>
+
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.dao"/>
+    </bean>
+
+    <!-- 自定义切面配置start -->
+    <bean id="proxy"
+          class="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.proxy.MyProxy">
+    </bean>
+    <aop:config>
+        <!-- 设置自定义的切面 -->
+        <aop:pointcut id="pc"
+                      expression="execution(* cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.impl.*.*(..))"/>
+        <aop:aspect ref="proxy">
+            <aop:before pointcut-ref="pc" method="breforPerformance"/>
+            <aop:after pointcut-ref="pc" method="afterPerformance"/>
+            <aop:around pointcut-ref="pc" method="aroundMethod"/>
+        </aop:aspect>
+    </aop:config>
+    <!-- 自定义切面配置 end -->
+
+
+    <!-- 事务配置 start -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource">
+        </property>
+    </bean>
+
+    <tx:advice id="txadvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="transfer*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="change*" propagation="REQUIRED"/>
+            <tx:method name="do*" propagation="REQUIRED"/>
+            <tx:method name="*" propagation="REQUIRED" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut
+                expression="execution(* cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.impl.*.*(..))"
+                id="txpointcut"/>
+        <aop:advisor advice-ref="txadvice" pointcut-ref="txpointcut"/>
+    </aop:config>
+
+    <!-- 事务配置 end -->
+
+
+    <!-- 强制使用cglib代理 -->
+    <!--<aop:aspectj-autoproxy proxy-target-class="true" />-->
+
+    <!-- 基于Ehcache 开始-->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+          p:cacheManager-ref="ehcacheManager"/>
+    <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation="classpath:ehcache.xml"/>
+    <!-- Ehcache 结束-->
+    <!--设置缓存管理器end-->
+
+    <!--性能监控开始-->
+    <bean id="performanceMonitor"
+          class="org.springframework.aop.interceptor.PerformanceMonitorInterceptor">
+    </bean>
+    <!-- 性能监控的切面配置 -->
+    <aop:config>
+        <aop:pointcut id="allServiceMethods"
+                      expression="execution(* cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.impl.*.*(..))"/>
+        <aop:advisor pointcut-ref="allServiceMethods" advice-ref="performanceMonitor"
+                     order="2"/>
+    </aop:config>
+    <!--性能监控结束-->
+
+</beans>
