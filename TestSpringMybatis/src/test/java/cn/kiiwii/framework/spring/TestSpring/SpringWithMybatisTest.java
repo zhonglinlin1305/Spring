@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.ITestXmlService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,11 +15,13 @@ import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.User;
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.ITestService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:applicationContextwithmybatis.xml")
+@ContextConfiguration("classpath:spring-mybatis.xml")
 public class SpringWithMybatisTest {
 
 	@Resource(name = "testService")
 	private ITestService testService;
+	@Resource(name = "testXmlService")
+	private ITestXmlService testXmlService;
 
 	/*@Test
 	public void test() {
@@ -37,21 +40,36 @@ public class SpringWithMybatisTest {
 		
 	}*/
 	
-	/*@Test
+	@Test
 	public void testInsert(){
 		
 		Account account = new Account();
 		account.setMoney(1000);
-		account.setName("xiaozhongzhong");
+		account.setName("kael");
 		try {
-			testService.insertAccount(account);
+			int id = testService.insertAccount(account);
+			System.out.println("==============================="+id);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
+	@Test
+	public void testXmlInsert(){
+
+		Account account = new Account();
+		account.setMoney(1000);
+		account.setName("小小1");
+		try {
+			int id = testXmlService.insertAccount(account);
+			System.out.println("==============================="+id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
-	/*@Test
+	@Test
 	public void testFind(){
 		
 		try {
@@ -61,27 +79,26 @@ public class SpringWithMybatisTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	@Test
 	public void testList(){
-		
+
 		try {
 			List<Account> accounts = testService.findAccountsById(3);
-
-			List<Account> account = testService.findAccountsById(3);
 			System.out.println(accounts);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	@Test
-	public void testFindUser(){
-		
+	public void testXmlList(){
+
 		try {
-			User user = testService.findUserById(1);
-			User user2 = testService.findUserById(1);
-			System.out.println(user);
+//			List<Account> accounts = testXmlService.findAccountsById(3);
+			Account account = testXmlService.findAccountById(3);
+			Account account2 = testXmlService.findAccountById(3);
+			System.out.println(account);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

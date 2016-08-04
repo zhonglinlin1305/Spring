@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.dao.ITestXmlDAO">
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache" />-->
+    <!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>-->
+    <select id="findAccountsById" resultType="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.Account">
+    <![CDATA[
+
+
+            select  id as id,
+			 name as name,
+			 money as money
+			 from account
+			 where
+			 id >= #{id}
+
+
+        ]]>
+  </select>
+    <select id="getAccountById" parameterType="int"
+            resultType="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.Account">
+    <![CDATA[
+
+
+            select  id as id,name as name,money as money
+			 from account
+			 where
+			id = #{id}
+
+
+        ]]>
+  </select>
+    <insert id="insertAccount" parameterType="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.Account"
+            keyColumn="`id`" keyProperty="`id`" useGeneratedKeys="true">
+        insert into account (name,money) values (#{name},#{money})
+    </insert>
+</mapper>

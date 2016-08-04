@@ -2,6 +2,9 @@ package cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.impl;
 
 import java.util.List;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +13,14 @@ import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model.User;
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.dao.ITestDAO;
 import cn.kiiwii.framework.spring.TestSpring.springwithmybatis.service.ITestService;
 
+import javax.annotation.Resource;
+
 @Service("testService")
 public class TestServiceImpl implements ITestService {
 
-	@Autowired
+	Logger logger = LoggerFactory.getLogger(TestServiceImpl.class);
+
+	@Resource
 	private ITestDAO testDAO;
 	public void test() {
 	}
@@ -36,11 +43,8 @@ public class TestServiceImpl implements ITestService {
 	}
 
 	public List<Account> findAccountsById(int i) {
+		List<Account> accounts = this.testDAO.findAccountsById(i);
 		return this.testDAO.findAccountsById(i);
 	}
 
-	public User findUserById(int i) {
-		return this.testDAO.findUserById(i);
-	}
-	
 }

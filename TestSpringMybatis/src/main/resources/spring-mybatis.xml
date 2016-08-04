@@ -68,11 +68,19 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
+
+        <!-- 使用xml配置，自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:cn/kiiwii/framework/spring/TestSpring/springwithmybatis/mapping/*.xml"></property>
+
         <property name="typeAliasesPackage" value="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model"/>
+
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+
+        <!-- 使用mapper注解方式 自动扫描接口注解 -->
         <property name="basePackage" value="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
     <!-- 自定义切面配置start -->
@@ -121,8 +129,8 @@
     <!-- 事务配置 end -->
 
 
-    <!-- 强制使用cglib代理 -->
-    <!--<aop:aspectj-autoproxy proxy-target-class="true" />-->
+    <!-- true 表示强制使用cglib代理 -->
+    <aop:aspectj-autoproxy />
 
     <!-- 基于Ehcache 开始-->
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"

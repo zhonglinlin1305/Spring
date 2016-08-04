@@ -2,24 +2,10 @@ package cn.kiiwii.framework.spring.TestSpring.springwithmybatis.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="account")
 public class Account implements Serializable{
 	
-	@Id
-	@GeneratedValue
-	@Column(name="id")
 	private int id;
-	
-	@Column(name="name")
 	private String name;
-	@Column(name="money")
 	private double money;
 	
 	public Account() {
