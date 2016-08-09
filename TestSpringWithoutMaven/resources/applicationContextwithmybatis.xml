@@ -17,7 +17,7 @@
 	">
 
 	<!-- 载入常用的配置 -->
-	<context:property-placeholder location="classpath:jdbc.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:druid.properties" />
 	<!-- 注解扫描所有包 -->
 	<context:component-scan
 		base-package="cn.kiiwii.framework.spring.TestSpring.springwithmybatis.*" />
@@ -27,35 +27,38 @@
 	<tx:annotation-driven />
 
 	<!-- 创建数据源 并且使用proxool数据库连接池 -->
-	<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
 
-		<property name="driver" value="${jdbc.driverClassName}" />
-		<property name="driverUrl" value="${jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-		<property name="alias" value="${proxool.alias}" />
-		<!-- 连接最大活动时间(毫秒) -->
-		<property name="maximumActiveTime" value="${proxool.maximumActiveTime}" />
-		<!-- 每次新增连接数 -->
-		<property name="prototypeCount" value="${proxool.prototypeCount}" />
-		<property name="trace" value="${proxool.trace}" />
-		<property name="verbose" value="${proxool.verbose}" />
+		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
 
-		<!-- 侦测状时间(毫秒) -->
-		<property name="houseKeepingSleepTime" value="${proxool.houseKeepingSleepTime}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${druid.initialSize}"/>
+		<property name="minIdle" value="${druid.minIdle}"/>
+		<property name="maxActive" value="${druid.maxActive}"/>
 
-		<!-- 最大连接数量 -->
-		<property name="maximumConnectionCount" value="${proxool.maximumConnectionCount}" />
-		<!-- 最小连接数量 -->
-		<property name="minimumConnectionCount" value="${proxool.simultaneousBuildThrottle}" />
-		<!-- 并发数 -->
-		<property name="simultaneousBuildThrottle" value="${proxool.simultaneousBuildThrottle}" />
-		<!-- 用于保持连接的测试语句 -->
-		<property name="houseKeepingTestSql" value="${proxool.houseKeepingTestSql}" />
-		<!-- 日志统计跟踪类型。 参数“ERROR”或 “INFO” -->
-		<property name="statisticsLogLevel" value="${proxool.statisticsLogLevel}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${druid.maxWait}"/>
 
-		<property name="testBeforeUse" value="${proxool.testBeforeUse}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}"/>
+
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}"/>
+
+		<property name="validationQuery" value="${druid.validationQuery}"/>
+		<property name="testWhileIdle" value="${druid.testWhileIdle}"/>
+		<property name="testOnBorrow" value="${druid.testOnBorrow}"/>
+		<property name="testOnReturn" value="${druid.testOnReturn}"/>
+
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用）
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
+
+		<!-- 配置监控统计拦截的filters -->
+		<property name="filters" value="${druid.filters}"/>
 
 	</bean>
 
