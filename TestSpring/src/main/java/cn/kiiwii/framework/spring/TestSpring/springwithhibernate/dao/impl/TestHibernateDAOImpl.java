@@ -29,13 +29,14 @@ public class TestHibernateDAOImpl extends HibernateDaoSupport implements ITestHi
 		
 		Account account = this.getHibernateTemplate().get(Account.class, userId);
 		account.setMoney(account.getMoney()+money);
-		try {
+		return true;
+		/*try {
 			this.getHibernateTemplate().update(account);
 			return true;
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 			return false;
-		}
+		}*/
 	}
 
 	public boolean minusMoney(int userId, float money) {
@@ -43,13 +44,14 @@ public class TestHibernateDAOImpl extends HibernateDaoSupport implements ITestHi
 		
 		Account account = this.getHibernateTemplate().get(Account.class, userId);
 		account.setMoney(account.getMoney()-money);
-		try {
+		return true;
+		/*try {
 			this.getHibernateTemplate().update(account);
 			return true;
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 			return false;
-		}
+		}*/
 	}
 
 	public Serializable save(Object o) {
