@@ -19,7 +19,7 @@ public class TestHibernateDAOImpl extends HibernateDaoSupport implements ITestHi
 	public void setMySessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
-	
+
 	public Object test() {
 		return null;
 	}

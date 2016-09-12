@@ -79,6 +79,7 @@
 					${hibernate.use_outer_join}
 				</prop>
 				<prop key="cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+				<prop key="hibernate.query.factory_class">${hibernate.query.factory_class}</prop>
 			</props>
 		</property>
 		<property name="dataSource">
@@ -120,10 +121,17 @@
 
 	<!-- 事务配置 start -->
 	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource">
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory">
 		</property>
 	</bean>
+
+	<!-- 事务配置 start -->
+	<!--<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource">
+		</property>
+	</bean>-->
 
 	<tx:advice id="txadvice" transaction-manager="transactionManager">
 		<tx:attributes>
