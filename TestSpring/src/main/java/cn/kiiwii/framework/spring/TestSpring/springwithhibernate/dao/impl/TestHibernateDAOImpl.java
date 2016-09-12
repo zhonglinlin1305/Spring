@@ -43,8 +43,12 @@ public class TestHibernateDAOImpl extends HibernateDaoSupport implements ITestHi
 		
 		
 		Account account = this.getHibernateTemplate().get(Account.class, userId);
-		account.setMoney(account.getMoney()-money);
-		return true;
+		if(account.getMoney()<=0){
+			return false;
+		}else{
+			account.setMoney(account.getMoney()-money);
+			return true;
+		}
 		/*try {
 			this.getHibernateTemplate().update(account);
 			return true;

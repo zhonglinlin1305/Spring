@@ -22,8 +22,11 @@ public class TestHibernateServiceImpl implements ITestHibernateService {
 	public boolean transfer(float money, int from, int to) throws Exception{
 		
 		if(money>0){
-			this.testHibernateDAO.minusMoney(from, money);
-			int i = 1/0;
+			boolean b = this.testHibernateDAO.minusMoney(from, money);
+			if(!b){
+				throw new Exception("余额不足");
+			}
+//			int i = 1/0;
 			this.testHibernateDAO.addMoney(to, money);
 			return true;
 		}else{
