@@ -1,14 +1,16 @@
 # Spring
 
 # TestSpring
-Ê¹ÓÃmaven¹¹½¨ÏîÄ¿£¬spring mvc£¬spring£¬·Ö±ğÓëjdbctemplate£¬hibernate£¬mybatisÈ«×¢½âÕûºÏ£¬ÆäÖĞ°üÀ¨°üº¬ÓĞspring¶¯Ì¬´úÀí£¬Êı¾İ¿âµÄÊÂÎñ´¦Àí¡£ÒÔ¼°¶¯Ì¬Êı¾İÔ´µÄÇĞ»»£¡
-×îĞÂĞÂÔöÁËehcache»º´æµÄÓ¦ÓÃ
+ä½¿ç”¨mavenæ„å»ºé¡¹ç›®ï¼Œspring mvcï¼Œspringï¼Œåˆ†åˆ«ä¸jdbctemplateï¼Œhibernateï¼Œmybatiså…¨æ³¨è§£æ•´åˆï¼Œå…¶ä¸­åŒ…æ‹¬åŒ…å«æœ‰springåŠ¨æ€ä»£ç†ï¼Œæ•°æ®åº“çš„äº‹åŠ¡å¤„ç†ã€‚ä»¥åŠåŠ¨æ€æ•°æ®æºçš„åˆ‡æ¢ï¼ æœ€æ–°æ–°å¢äº†ehcacheç¼“å­˜çš„åº”ç”¨
 
 #TestSpringWithoutMaven
 
-Ê¹ÓÃµ¼Èë°üµÄ·½·¨¹¹½¨ÏîÄ¿£¬spring mvc£¬spring£¬·Ö±ğÓëjdbctemplate£¬hibernate£¬mybatisÈ«×¢½âÕûºÏ£¬ÆäÖĞ°üÀ¨°üº¬ÓĞspring¶¯Ì¬´úÀí£¬Êı¾İ¿âµÄÊÂÎñ´¦Àí¡£ÒÔ¼°¶¯Ì¬Êı¾İÔ´µÄÇĞ»»£¡
+ä½¿ç”¨å¯¼å…¥åŒ…çš„æ–¹æ³•æ„å»ºé¡¹ç›®ï¼Œspring mvcï¼Œspringï¼Œåˆ†åˆ«ä¸jdbctemplateï¼Œhibernateï¼Œmybatiså…¨æ³¨è§£æ•´åˆï¼Œå…¶ä¸­åŒ…æ‹¬åŒ…å«æœ‰springåŠ¨æ€ä»£ç†ï¼Œæ•°æ®åº“çš„äº‹åŠ¡å¤„ç†ã€‚ä»¥åŠåŠ¨æ€æ•°æ®æºçš„åˆ‡æ¢ï¼
 
 #EHCACHE
-mybatis,¼ÓÈëÁËehcache»º´æ
+mybatis,åŠ å…¥äº†ehcacheç¼“å­˜
+
+#æ›´å¤šé¡¹ç›®
+[æ›´å¤šé¡¹ç›®](spring-redis/)
 
 
