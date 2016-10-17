@@ -11,6 +11,6 @@
 mybatis,加入了ehcache缓存
 
 #更多项目
-[更多项目](spring-redis/)
+[更多项目](https://github.com/zhonglinlin1305/spring-redis/)
 
 
