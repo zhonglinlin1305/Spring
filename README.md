@@ -10,6 +10,6 @@
 #EHCACHE
 mybatis,加入了ehcache缓存
 
-#[更多项目](https://github.com/zhonglinlin1305/spring-projects/)
-
+#[更多spring项目](https://github.com/zhonglinlin1305/spring-projects/)
+#[更多spring-boot项目](https://github.com/zhonglinlin1305/spring-boot-sample/)
 
